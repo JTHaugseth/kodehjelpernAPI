@@ -10,7 +10,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "MyPolicy",
                         builder =>
                         {
-                            builder.WithOrigins("http://localhost:3000") // Replace with your React app's URL
+                            builder.WithOrigins("https://kodehjelpern.no") // Replace with your React app's URL
                                     .AllowAnyHeader()
                                     .AllowAnyMethod();
                         });
