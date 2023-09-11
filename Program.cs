@@ -1,22 +1,37 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Set the URLs the application will listen on
+builder.WebHost.UseUrls("https://0.0.0.0:5000");
 
+// Configure Kestrel server options
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000, listenOptions =>
+    {
+        listenOptions.UseHttps("/etc/letsencrypt/live/api.kodehjelpern.no/fullchain.pem", 
+                               "/etc/letsencrypt/live/api.kodehjelpern.no/privkey.pem");
+    });
+});
+
+// Add services to the container.
 builder.Services.AddControllers();
 
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "MyPolicy",
-                        builder =>
-                        {
-                            builder.WithOrigins("https://kodehjelpern.no") // Replace with your React app's URL
-                                    .AllowAnyHeader()
-                                    .AllowAnyMethod();
-                        });
+                      builder =>
+                      {
+                          builder.WithOrigins("https://www.kodehjelpern.no")
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod();
+                      });
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add Swagger/OpenAPI support
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -30,7 +45,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 // Use the CORS policy
