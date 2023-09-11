@@ -6,16 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Set the URLs the application will listen on
 builder.WebHost.UseUrls("https://0.0.0.0:5000");
 
-// Configure Kestrel server options
-builder.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(5000, listenOptions =>
-    {
-        listenOptions.UseHttps("/etc/letsencrypt/live/api.kodehjelpern.no/fullchain.pem", 
-                               "/etc/letsencrypt/live/api.kodehjelpern.no/privkey.pem");
-    });
-});
-
 // Add services to the container.
 builder.Services.AddControllers();
 
