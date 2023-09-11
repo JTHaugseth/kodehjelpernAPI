@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("https://0.0.0.0:5000");
 
 // Configure Kestrel server options
-builder.WebHost.ConfigureKestrel(serverOptions =>
+builder.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(5000, listenOptions =>
     {
